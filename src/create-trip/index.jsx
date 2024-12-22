@@ -1,9 +1,17 @@
 import React, { useState } from "react";
-
+import { Input } from "@/components/ui/input";
+import { SelectBudget } from "@/constants/options";
+import { SelectTravelslist } from "@/constants/options";
+import { Button } from "@/components/ui/Button";
 function CreateTrip() {
   const [query, setQuery] = useState('');
+  const [place,setplace]= useState(null);
   const [suggestions, setSuggestions] = useState([]);
-  const apiKey = process.env.REACT_APP_GEOAPIFY_API_KEY;
+
+
+
+  const apiKey = import.meta.env.VITE_GEOAPIFY_API_KEY;
+  ;
 
   const fetchSuggestions = async (input) => {
     if (!input) {
@@ -15,6 +23,7 @@ function CreateTrip() {
     try {
       const response = await fetch(url);
       const data = await response.json();
+      console.log('API Response:', data);
       setSuggestions(data.features || []);
     } catch (error) {
       console.error('Error fetching suggestions:', error);
@@ -28,8 +37,13 @@ function CreateTrip() {
   };
 
   const handleSelect = (place) => {
-    setQuery(place.properties.formatted); // Set the selected place's name
-    setSuggestions([]); // Clear suggestions
+    const selected= (place.properties.formatted); // Save the selected place
+    setplace(selected); // save the selected place in state
+    console.log("this is slected place ",selected);
+
+    
+    setQuery(place.properties.formatted);
+    setSuggestions([]); 
   };
 
   return (
@@ -59,7 +73,43 @@ function CreateTrip() {
           ))}
         </ul>
       </div>
+      <div>
+        <h2 className=" text-xl font-semibold mt-9 mb-3"> how many days you are planning the trip?</h2>
+        <Input placeholder="ex.3" type= "number"/>
+      </div>
+      <div>
+        <h2 className="text-xl my-3 font-medium"> what is your Budget?</h2>
+      </div>
+      <div className="grid grid-cols-3 cursor-pointer gap-5 mt-5">
+        {SelectBudget.map((item,index)=>(
+          <div key={index} className="p-4 border rounded-lg hover:shadow">
+            <h2 className="text-lg font-bold">{item.type}</h2>
+            <h2 className="text-sm text-gray-600">{item.desc}</h2>
+          </div>
+
+        ))}
+         
+
+
+      </div>
+      <div>
+        <h2 className="text-xl my-3 font-medium"> Who do you plan on traveling with on your next adventure?</h2>
+      </div>
+      <div className="grid grid-cols-3 cursor-pointer gap-5 mt-5">
+        {SelectTravelslist.map((item,index)=>(
+          <div key={index} className="p-4 border rounded-lg hover:shadow">
+            <h2 className="text-lg font-bold">{item.title}</h2>
+            <h2 className="text-sm text-gray-600">{item.desc}</h2>
+          </div>
+
+        ))}
+      </div>
+
+      <div className="flex justify-center mt-10">
+        <Button> Generate Trip</Button>
+      </div>
     </div>
+    
   );
 }
 
