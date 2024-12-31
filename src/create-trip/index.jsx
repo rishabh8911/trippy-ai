@@ -3,6 +3,7 @@ import { Input } from "@/components/ui/input";
 import { SelectBudget } from "@/constants/options";
 import { SelectTravelslist } from "@/constants/options";
 import { Button } from "@/components/ui/Button";
+import { toast } from "sonner";
 
 function CreateTrip() {
   const [query, setQuery] = useState("");
@@ -71,6 +72,10 @@ function CreateTrip() {
   };
 
   const handleGenerateTrip = () => {
+    if(tripData?.noOfDays>5&&!tripData?.destination||!tripData?.budget)
+    {
+      toast("please fill all detail")
+    }
     console.log("Generated Trip Data:", tripData);
    
   };
