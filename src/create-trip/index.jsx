@@ -80,6 +80,9 @@ function CreateTrip() {
    
   };
 
+  const FINAL_PROMPT= AI_PROMT
+  .
+
   return (
     <div className="sm:px-10 md:px-32 lg:px-56 xl:px-10 px-5 mt-10 text-left">
       <h2 className="font-bold text-3xl">Tell us your travel preference</h2>
