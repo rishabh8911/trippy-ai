@@ -1,9 +1,10 @@
 import React, { useState } from "react";
 import { Input } from "@/components/ui/input";
-import { SelectBudget } from "@/constants/options";
+import { Ai_Prompt, SelectBudget } from "@/constants/options";
 import { SelectTravelslist } from "@/constants/options";
 import { Button } from "@/components/ui/Button";
 import { toast } from "sonner";
+
 
 function CreateTrip() {
   const [query, setQuery] = useState("");
@@ -77,11 +78,21 @@ function CreateTrip() {
       toast("please fill all detail")
     }
     console.log("Generated Trip Data:", tripData);
+
+    const FINAL_PROMPT = Ai_Prompt
+    .replace('{destination}',tripData?.destination?.label)
+    .replace('{totalDays}',tripData?.noOfDays)
+    .replace('{traveler}',tripData?.traveler)
+    .replace('{budget}',tripData?.budget)
+    
+    console.log("FINAL", FINAL_PROMPT)
+
+    
+    
    
   };
 
-  const FINAL_PROMPT= AI_PROMT
-  .
+
 
   return (
     <div className="sm:px-10 md:px-32 lg:px-56 xl:px-10 px-5 mt-10 text-left">
