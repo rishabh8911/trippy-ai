@@ -4,6 +4,7 @@ import { Ai_Prompt, SelectBudget } from "@/constants/options";
 import { SelectTravelslist } from "@/constants/options";
 import { Button } from "@/components/ui/Button";
 import { toast } from "sonner";
+import { chatSession } from "@/service/AImodel";
 
 
 function CreateTrip() {
@@ -72,26 +73,51 @@ function CreateTrip() {
     }));
   };
 
-  const handleGenerateTrip = () => {
-    if(tripData?.noOfDays>5&&!tripData?.destination||!tripData?.budget)
-    {
-      toast("please fill all detail")
-    }
-    console.log("Generated Trip Data:", tripData);
+  // const handleGenerateTrip = () => {
+  //   if(tripData?.noOfDays>5&&!tripData?.destination||!tripData?.budget)
+  //   {
+  //     toast("please fill all detail")
+  //   }
+  //   console.log("Generated Trip Data:", tripData);
 
-    const FINAL_PROMPT = Ai_Prompt
-    .replace('{destination}',tripData?.destination?.label)
-    .replace('{totalDays}',tripData?.noOfDays)
-    .replace('{traveler}',tripData?.traveler)
-    .replace('{budget}',tripData?.budget)
+  //   const FINAL_PROMPT = Ai_Prompt
+  //   .replace('{destination}',tripData?.destination)
+  //   .replace('{totalDays}',tripData?.days)
+  //   .replace('{traveler}',tripData?.travelCompanions)
+  //   .replace('{budget}',tripData?.budget)
     
-    console.log("FINAL", FINAL_PROMPT)
+  //   console.log("FINAL", FINAL_PROMPT)
 
     
     
    
-  };
+  // };
 
+
+  const  handleGenerateTrip = async () => {
+    const { destination, days, travelCompanions, budget } = tripData;
+  // "||" used to combine multiple conditions where anyone is true triggers he code the block 
+    if (!destination || !days || !budget || !travelCompanions) {
+      toast("Please fill in all details");
+      return;
+    }
+  // .replace method is called on a string
+    const FINAL_PROMPT = Ai_Prompt
+      .replace('{destination}', destination) 
+      .replace('{totalDays}', days) 
+      .replace('{traveler}', travelCompanions) 
+      .replace('{budget}', budget);
+  
+    console.log("Generated Trip Data:", tripData);
+    console.log("FINAL PROMPT:", FINAL_PROMPT);
+
+    const result = await chatSession.sendMessage(FINAL_PROMPT)
+    console.log(result?.response?.text());
+    
+  
+    
+  };
+  
 
 
   return (
