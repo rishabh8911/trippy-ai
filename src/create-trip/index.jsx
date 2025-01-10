@@ -95,6 +95,13 @@ function CreateTrip() {
 
 
   const  handleGenerateTrip = async () => {
+    const user= localStorage.getItem('user');
+
+    if()
+
+
+
+
     const { destination, days, travelCompanions, budget } = tripData;
   // "||" used to combine multiple conditions where anyone is true triggers he code the block 
     if (!destination || !days || !budget || !travelCompanions) {
