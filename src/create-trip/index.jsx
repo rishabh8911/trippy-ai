@@ -1,15 +1,23 @@
 import React, { useState } from "react";
 import { Input } from "@/components/ui/input";
+import { FcGoogle } from "react-icons/fc";
 import { Ai_Prompt, SelectBudget } from "@/constants/options";
 import { SelectTravelslist } from "@/constants/options";
 import { Button } from "@/components/ui/Button";
 import { toast } from "sonner";
 import { chatSession } from "@/service/AImodel";
-
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+} from "@/components/ui/dialog";
+import { useGoogleLogin } from "@react-oauth/google";
 
 function CreateTrip() {
   const [query, setQuery] = useState("");
   const [place, setPlace] = useState(null);
+  const [openDailog, setOpenDailog] = useState(false);
   const [suggestions, setSuggestions] = useState([]);
   const [tripData, setTripData] = useState({
     destination: "",
@@ -26,7 +34,9 @@ function CreateTrip() {
       return;
     }
 
-    const url = `https://api.geoapify.com/v1/geocode/autocomplete?text=${encodeURIComponent(input)}&apiKey=${apiKey}`;
+    const url = `https://api.geoapify.com/v1/geocode/autocomplete?text=${encodeURIComponent(
+      input
+    )}&apiKey=${apiKey}`;
     try {
       const response = await fetch(url);
       const data = await response.json();
@@ -85,57 +95,77 @@ function CreateTrip() {
   //   .replace('{totalDays}',tripData?.days)
   //   .replace('{traveler}',tripData?.travelCompanions)
   //   .replace('{budget}',tripData?.budget)
-    
+
   //   console.log("FINAL", FINAL_PROMPT)
 
-    
-    
-   
   // };
 
+  const login = useGoogleLogin({
+    onSuccess:(codeResp)=>{
+      console.log("coderesponse",codeResp);
+      GetUserProfile(codeResp);
 
-  const  handleGenerateTrip = async () => {
-    const user= localStorage.getItem('user');
+    },
+    onError:(error)=>console.log("google login error",error)
+    
+    
+  })
 
-    if()
+  const handleGenerateTrip = async () => {
+    const user = localStorage.getItem("user");
 
-
-
+    if (!user) {
+      setOpenDailog(true);
+      return;
+    }
 
     const { destination, days, travelCompanions, budget } = tripData;
-  // "||" used to combine multiple conditions where anyone is true triggers he code the block 
+    // "||" used to combine multiple conditions where anyone is true triggers he code the block
     if (!destination || !days || !budget || !travelCompanions) {
       toast("Please fill in all details");
       return;
     }
-  // .replace method is called on a string
-    const FINAL_PROMPT = Ai_Prompt
-      .replace('{destination}', destination) 
-      .replace('{totalDays}', days) 
-      .replace('{traveler}', travelCompanions) 
-      .replace('{budget}', budget);
-  
+    // .replace method is called on a string
+    const FINAL_PROMPT = Ai_Prompt.replace("{destination}", destination)
+      .replace("{totalDays}", days)
+      .replace("{traveler}", travelCompanions)
+      .replace("{budget}", budget);
+
     console.log("Generated Trip Data:", tripData);
     console.log("FINAL PROMPT:", FINAL_PROMPT);
 
-    const result = await chatSession.sendMessage(FINAL_PROMPT)
+    const result = await chatSession.sendMessage(FINAL_PROMPT);
     console.log(result?.response?.text());
-    
-  
-    
   };
-  
 
+  const GetUserProfile=(tokenInfo)=>{
+    axios.get(`https://www.googleapis.com/oauth2/v1/userinfo?access_token=${tokenInfo?.access_token}`,{
+      headers:{
+        Authorization:`Bearer ${tokenInfo?.access_token}`,
+        Accept:'Application/json'
+      }
+
+    }).then((res)=>{
+      console.log("response=",res);
+      localStorage.setItem('user',JSON.stringify(res.data))
+      setOpenDailog(false);
+      handleGenerateTrip();
+      
+    })
+    
+  }
 
   return (
     <div className="sm:px-10 md:px-32 lg:px-56 xl:px-10 px-5 mt-10 text-left">
       <h2 className="font-bold text-3xl">Tell us your travel preference</h2>
       <p className="mt-3 text-xl font-light text-[20px]">
-        Just provide some basic information, and our trip planner will generate a customized itinerary based on your
-        preferences.
+        Just provide some basic information, and our trip planner will generate
+        a customized itinerary based on your preferences.
       </p>
       <div>
-        <h2 className="text-xl my-5 font-medium">What's your destination choice?</h2>
+        <h2 className="text-xl my-5 font-medium">
+          What's your destination choice?
+        </h2>
         <input
           type="text"
           value={query}
@@ -156,7 +186,9 @@ function CreateTrip() {
         </ul>
       </div>
       <div>
-        <h2 className="text-xl font-semibold mt-9 mb-3">How many days are you planning the trip?</h2>
+        <h2 className="text-xl font-semibold mt-9 mb-3">
+          How many days are you planning the trip?
+        </h2>
         <Input
           placeholder="ex.3"
           type="number"
@@ -184,7 +216,9 @@ function CreateTrip() {
         ))}
       </div>
       <div>
-        <h2 className="text-xl my-3 font-medium">Who do you plan on traveling with on your next adventure?</h2>
+        <h2 className="text-xl my-3 font-medium">
+          Who do you plan on traveling with on your next adventure?
+        </h2>
       </div>
       <div className="grid grid-cols-3 cursor-pointer gap-5 mt-5">
         {SelectTravelslist.map((item, index) => (
@@ -203,6 +237,23 @@ function CreateTrip() {
       <div className="flex justify-center mt-10">
         <Button onClick={handleGenerateTrip}>Generate Trip</Button>
       </div>
+      <Dialog open={openDailog}>
+        
+        <DialogContent>
+          <DialogHeader>
+           
+            <DialogDescription>
+              <h2 className="font-bold text-lg mt-1">Sign with Google</h2>
+              <p>Sign in with Google Authentication securely</p>
+              <Button 
+              onClick={login}
+              className="pt-1 w-full mt-4 flex"> 
+              <FcGoogle className="h-8 w-8" />
+              Sign in with Google</Button>
+            </DialogDescription>
+          </DialogHeader>
+        </DialogContent>
+      </Dialog>
     </div>
   );
 }
