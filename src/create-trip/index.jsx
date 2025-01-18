@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import axios from "axios";
 import { Input } from "@/components/ui/input";
 import { FcGoogle } from "react-icons/fc";
 import { Ai_Prompt, SelectBudget } from "@/constants/options";
@@ -6,8 +7,11 @@ import { SelectTravelslist } from "@/constants/options";
 import { Button } from "@/components/ui/Button";
 import { toast } from "sonner";
 import { chatSession } from "@/service/AImodel";
+import { getFirestore } from "firebase/firestore";
+import { doc, setDoc } from "firebase/firestore"; 
 import {
   Dialog,
+  DialogTitle,
   DialogContent,
   DialogDescription,
   DialogHeader,
@@ -111,10 +115,27 @@ function CreateTrip() {
     
   })
 
+  const SaveAiTrip= async(tripData)=>{
+    const user = JSON.parse( localStorage.getItem('user'));
+    const docId=Date.now().toString()
+
+// Add a new document in collection "cities"
+   await setDoc(doc(db, "trips", docId), {
+    userSelection:formData,
+    tripData:tripData,
+    userEmail:user?.email,
+    id:docId
+  
+});
+  }
+
   const handleGenerateTrip = async () => {
+    console.log("generating trip...");
+    
     const user = localStorage.getItem("user");
 
     if (!user) {
+      console.log("user not authenticated");
       setOpenDailog(true);
       return;
     }
@@ -139,6 +160,8 @@ function CreateTrip() {
   };
 
   const GetUserProfile=(tokenInfo)=>{
+    console.log("token info",tokenInfo);
+    
     axios.get(`https://www.googleapis.com/oauth2/v1/userinfo?access_token=${tokenInfo?.access_token}`,{
       headers:{
         Authorization:`Bearer ${tokenInfo?.access_token}`,
@@ -151,9 +174,14 @@ function CreateTrip() {
       setOpenDailog(false);
       handleGenerateTrip();
       
+    }).catch((err)=>{
+      console.error("error fetching user profile:",err);
+      
     })
     
   }
+
+
 
   return (
     <div className="sm:px-10 md:px-32 lg:px-56 xl:px-10 px-5 mt-10 text-left">
@@ -241,6 +269,7 @@ function CreateTrip() {
         
         <DialogContent>
           <DialogHeader>
+            <DialogTitle>welcome</DialogTitle>
            
             <DialogDescription>
               <h2 className="font-bold text-lg mt-1">Sign with Google</h2>
