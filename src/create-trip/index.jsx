@@ -2,13 +2,15 @@ import React, { useState } from "react";
 import axios from "axios";
 import { Input } from "@/components/ui/input";
 import { FcGoogle } from "react-icons/fc";
+import { AiOutlineLoading3Quarters } from "react-icons/ai";
 import { Ai_Prompt, SelectBudget } from "@/constants/options";
 import { SelectTravelslist } from "@/constants/options";
 import { Button } from "@/components/ui/Button";
 import { toast } from "sonner";
 import { chatSession } from "@/service/AImodel";
-import { getFirestore } from "firebase/firestore";
-import { doc, setDoc } from "firebase/firestore"; 
+import {getFirestore} from "firebase/firestore";
+import { doc, setDoc} from "firebase/firestore"; 
+import { db } from "@/service/firebaseConfig";
 import {
   Dialog,
   DialogTitle,
@@ -21,6 +23,7 @@ import { useGoogleLogin } from "@react-oauth/google";
 function CreateTrip() {
   const [query, setQuery] = useState("");
   const [place, setPlace] = useState(null);
+  const [loading,setLoading]= useState(false);
   const [openDailog, setOpenDailog] = useState(false);
   const [suggestions, setSuggestions] = useState([]);
   const [tripData, setTripData] = useState({
@@ -116,17 +119,19 @@ function CreateTrip() {
   })
 
   const SaveAiTrip= async(tripData)=>{
+    setLoading(true);
     const user = JSON.parse( localStorage.getItem('user'));
     const docId=Date.now().toString()
 
 // Add a new document in collection "cities"
    await setDoc(doc(db, "trips", docId), {
-    userSelection:formData,
-    tripData:tripData,
-    userEmail:user?.email,
-    id:docId
+    userSelection: tripData,
+    tripData: JSON.parse(tripData),
+    userEmail: user?.email,
+    id: docId
   
 });
+  setLoading(false);
   }
 
   const handleGenerateTrip = async () => {
@@ -157,6 +162,8 @@ function CreateTrip() {
 
     const result = await chatSession.sendMessage(FINAL_PROMPT);
     console.log(result?.response?.text());
+    setLoading(false)
+    SaveAiTrip(result?.response?.text())
   };
 
   const GetUserProfile=(tokenInfo)=>{
@@ -179,9 +186,8 @@ function CreateTrip() {
       
     })
     
+    
   }
-
-
 
   return (
     <div className="sm:px-10 md:px-32 lg:px-56 xl:px-10 px-5 mt-10 text-left">
@@ -231,6 +237,7 @@ function CreateTrip() {
       <div className="grid grid-cols-3 cursor-pointer gap-5 mt-5">
         {SelectBudget.map((item, index) => (
           <div
+          
             key={index}
             // for dynamic styling we use {`styling`}
             className={`p-4 border rounded-lg hover:shadow ${
@@ -263,7 +270,16 @@ function CreateTrip() {
         ))}
       </div>
       <div className="flex justify-center mt-10">
-        <Button onClick={handleGenerateTrip}>Generate Trip</Button>
+        <Button
+         disabled={loading}
+         
+
+         onClick={handleGenerateTrip}>
+          { loading?
+            <AiOutlineLoading3Quarters className='h-7 w-7 animate-spin'/>:'gen trip'
+
+          }
+               </Button>
       </div>
       <Dialog open={openDailog}>
         
@@ -275,6 +291,7 @@ function CreateTrip() {
               <h2 className="font-bold text-lg mt-1">Sign with Google</h2>
               <p>Sign in with Google Authentication securely</p>
               <Button 
+              
               onClick={login}
               className="pt-1 w-full mt-4 flex"> 
               <FcGoogle className="h-8 w-8" />
