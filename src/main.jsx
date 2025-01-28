@@ -1,5 +1,6 @@
 import { StrictMode } from 'react'
 import { createRoot } from 'react-dom/client'
+import ShowTrip from './ShowTrip/[tripId]/index.jsx'
 import { createBrowserRouter, Route, RouterProvider } from 'react-router'
 import CreateTrip from './create-trip'
 import Header from './components/ui/custom/Header'
@@ -18,6 +19,10 @@ const router = createBrowserRouter([
   {
     path:'/create-trip',
     element:<CreateTrip/>
+  },
+  {
+    path:'/show-trip/:tripId',
+    element:<ShowTrip/>
   }
 ])
 

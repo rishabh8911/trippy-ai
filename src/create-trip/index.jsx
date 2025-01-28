@@ -132,6 +132,7 @@ function CreateTrip() {
   
 });
   setLoading(false);
+  navigate('showTrip/')
   }
 
   const handleGenerateTrip = async () => {
