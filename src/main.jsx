@@ -1,7 +1,7 @@
 import { StrictMode } from 'react'
 import { createRoot } from 'react-dom/client'
 import ShowTrip from './ShowTrip/[tripId]/index.jsx'
-import { createBrowserRouter, Route, RouterProvider } from 'react-router'
+import { createBrowserRouter, RouterProvider } from 'react-router-dom'
 import CreateTrip from './create-trip'
 import Header from './components/ui/custom/Header'
 import { Toaster } from './components/ui/sonner'

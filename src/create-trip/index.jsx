@@ -19,8 +19,10 @@ import {
   DialogHeader,
 } from "@/components/ui/dialog";
 import { useGoogleLogin } from "@react-oauth/google";
+import { useNavigate } from "react-router-dom";
 
 function CreateTrip() {
+  const navigate= useNavigate();
   const [query, setQuery] = useState("");
   const [place, setPlace] = useState(null);
   const [loading,setLoading]= useState(false);
@@ -132,7 +134,8 @@ function CreateTrip() {
   
 });
   setLoading(false);
-  navigate('showTrip/')
+ 
+  navigate('/show-trip/'+docId)
   }
 
   const handleGenerateTrip = async () => {

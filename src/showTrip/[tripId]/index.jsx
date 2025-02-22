@@ -1,21 +1,22 @@
-import React, {useEffect}from "react";
+import React, {useEffect, useState}from "react";
 import { useParams } from "react-router";
 import { db } from "@/service/firebaseConfig";
 import {doc, getDoc} from "firebase/firestore";
 import { toast } from "sonner";
-import Info from "../components/info";
+import Info from "../components/Info";
 function ShowTrip(){
   
     //fetch document from firebase db
 
     const {tripId}=useParams();
+    const  [trip , setTrip]= useState([])
 
 
     useEffect(()=>{
       tripId&&getTripData();
     },[tripId])
 
-    // use to get info from firebase
+    // use to get trip info from firebase
 
     const getTripData=async ()=>{
         const docRef=doc(db,'trips',tripId)
@@ -23,6 +24,7 @@ function ShowTrip(){
 
         if (docSnap.exists()){
           console.log("document:",docSnap.data());
+          setTrip(docSnap.data());
           
         }else{
           console.log("no data found");
@@ -33,8 +35,9 @@ function ShowTrip(){
 
   return (
     <div>
-      <Info trip={trip}/>
-    </div>
+    <div>This is ShowTrip</div>
+    {trip ? <Info trip={trip} /> : <p>Trip not found.</p>}
+  </div>
   )
 }
 export default ShowTrip;
