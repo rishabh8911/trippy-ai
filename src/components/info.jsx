@@ -5,6 +5,10 @@ function Info({trip}) {
     return (
         <div>
             <img src='trip img.webp'/>
+
+            <div>
+                 
+            </div>
         </div>
         
     )
