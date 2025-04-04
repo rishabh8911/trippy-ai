@@ -1,7 +1,25 @@
-import React from "react";
+
+
+import React, { useEffect } from "react";
 import { Share } from "lucide-react";
+import { GetPlaceDetails } from "@/service/GlobalApi";
 
 function Info({ trip }) {
+
+    useEffect(()=>{
+        trip&&GetPlacePhoto()
+    },[trip])
+
+    const GetPlacePhoto=async()=>{
+        const data={
+            textQuery:trip?.userSelection?.location?.label
+        }
+        const result=await GetPlaceDetails(data).then(resp=>{
+            console.log("response data" ,resp.data);
+            
+        })
+
+    }
   const userSelection = trip?.userSelection
     ? JSON.parse(trip.userSelection)
     : null;

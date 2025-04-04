@@ -5,6 +5,8 @@ import { doc, getDoc } from "firebase/firestore";
 import { toast } from "sonner";
 import Info from "../components/Info";
 import Hotels from "../components/Hotels";
+import Visit from "../components/Visit";
+import Footer from "../components/Footer";
 function ShowTrip() {
   //fetch document from firebase db
 
@@ -36,7 +38,9 @@ function ShowTrip() {
       
       {trip ? <Info trip={trip} /> : <p>Trip not found.</p>}
       <Hotels trip={trip}/>
+      <Visit trip={trip}/>
+      <Footer/>
     </div>
-  );
+  )
 }
 export default ShowTrip;
