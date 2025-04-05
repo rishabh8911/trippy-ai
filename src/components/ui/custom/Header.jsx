@@ -1,16 +1,109 @@
-import React from 'react'
-import {Button} from '../button.jsx'
+import React, { useEffect ,useState} from "react";
+import { googleLogout } from "@react-oauth/google";
+import { useNavigate } from "react-router";
+import { useGoogleLogin } from "@react-oauth/google";
+import { Button } from "../Button";
+import { FcGoogle } from "react-icons/fc";
+
+import {
+  Dialog,
+  DialogTitle,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+} from "@/components/ui/dialog";
+
 
 function Header() {
-    return (
-        <div className='p-1 flex h-16 justify-between items center shadow-black' >
-        <img src="image.png" alt="travel logo" />
-         <Button>sign in</Button>
-        </div> 
-    )
+    const [user, setUser]= useState(null);
+    const [openDailog,setOpenDailog] = useState(false)
+//   const user = JSON.stringify(localStorage.getItem("user"));
+
+useEffect(()=>{
+    const storedUser = localStorage.getItem("user");
+    if(storedUser){
+        setUser(JSON.parse(storedUser));
+    }
+},[]);
+
+const login = useGoogleLogin({
+    onSuccess:(codeResp)=>{
+      console.log("coderesponse",codeResp);
+      GetUserProfile(codeResp);
+
+    },
+    onError:(error)=>console.log("google login error",error)
+    
+    
+  })
+
+   const GetUserProfile=(tokenInfo)=>{
+      console.log("token info",tokenInfo);
+      
+      axios.get(`https://www.googleapis.com/oauth2/v1/userinfo?access_token=${tokenInfo?.access_token}`,{
+        headers:{
+          Authorization:`Bearer ${tokenInfo?.access_token}`,
+          Accept:'Application/json'
+        }
+  
+      }).then((res)=>{
+        console.log("response=",res);
+        localStorage.setItem('user',JSON.stringify(res.data))
+        setOpenDailog(false);
+        window.location.reload()
+        
+      }).catch((err)=>{
+        console.error("error fetching user profile:",err);
+        
+      })
+      
+      
+    }
+
+  const navigate= useNavigate();
+  function goToHomePage(){
+    navigate('/')
+  }
 
 
+  return (
+    <div className="p-1 flex h-16 justify-between items center shadow-black">
+      <img src="image.png" alt="travel logo"/>
+      <div>
+        {user? (
+            <button onClick={()=>{
+                googleLogout(); 
+                setUser(null)
+                localStorage.removeItem("user");
+                navigate('/');
+                
+            }} className="bg-black text-white font-semibold p-2 rounded h-10">Log Out</button>
+        ):(
+            <button onClick={()=> setOpenDailog(true)} className="bg-black text-white font-semibold p-2 rounded h-10">Sign in </button>
+
+        )}
+      </div>
+      <Dialog open={openDailog}>
+              
+              <DialogContent>
+                <DialogHeader>
+                  <DialogTitle>welcome</DialogTitle>
+                 
+                  <DialogDescription>
+                    <h2 className="font-bold text-lg mt-1">Sign with Google</h2>
+                    <p>Sign in with Google Authentication securely</p>
+                    <Button 
+                    
+                    onClick={login}
+                    className="pt-1 w-full mt-4 flex"> 
+                    <FcGoogle className="h-8 w-8" />
+                    Sign in with Google</Button>
+                  </DialogDescription>
+                </DialogHeader>
+              </DialogContent>
+            </Dialog>
+    </div>
+  );
 }
 
-
-export default Header
+export default Header;

@@ -280,7 +280,7 @@ function CreateTrip() {
 
          onClick={handleGenerateTrip}>
           { loading?
-            <AiOutlineLoading3Quarters className='h-7 w-7 animate-spin'/>:'gen trip'
+            <AiOutlineLoading3Quarters className='h-7 w-7 animate-spin'/>:'Generate Trip'
 
           }
                </Button>

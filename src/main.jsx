@@ -8,6 +8,7 @@ import { Toaster } from './components/ui/sonner';
 import { GoogleOAuthProvider } from '@react-oauth/google';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import App from './App.jsx';
+import Layout from './Layout.jsx';
 import './index.css';
 
 //  Created an QueryClient instance
@@ -15,24 +16,32 @@ const queryClient = new QueryClient();
 
 const router = createBrowserRouter([
   {
-    path: '/',
-    element: <App />,
-  },
-  {
-    path: '/create-trip',
-    element: <CreateTrip />,
-  },
-  {
-    path: '/show-trip/:tripId',
-    element: <ShowTrip />,
-  },
+    path:'/',
+    element:<Layout/>,
+    children:[
+      {
+        path: '/',
+        element: <App />,
+      },
+      {
+        path: '/create-trip',
+        element: <CreateTrip />,
+      },
+      {
+        path: '/show-trip/:tripId',
+        element: <ShowTrip />,
+      },
+
+    ]
+  }
+ 
 ]);
 
 createRoot(document.getElementById('root')).render(
   <StrictMode>
     <QueryClientProvider client={queryClient}>
       <GoogleOAuthProvider clientId={import.meta.env.VITE_GOOGLE_AUTH_CLIENT_ID}>
-        <Header />
+
         <Toaster />
         <RouterProvider router={router} />
       </GoogleOAuthProvider>
