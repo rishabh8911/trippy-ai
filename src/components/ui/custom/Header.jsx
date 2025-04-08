@@ -67,7 +67,7 @@ const login = useGoogleLogin({
 
 
   return (
-    <div className="p-1 flex h-16 justify-between items center shadow-black">
+    <div className="p-1 border-rounded flex h-16  w-full justify-between items center ">
       <img src="image.png" alt="travel logo"/>
       <div>
         {user? (

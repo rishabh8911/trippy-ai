@@ -44,18 +44,18 @@ function Info({ trip }) {
         alt={location}
       />
       <div className="flex flex-col gap-5 my-5">
-        <h2 className="font-bold text-2xl">
+        <h2 className="font-bold text-white text-2xl">
           {location}
         </h2>
 
         <div className="flex gap-5 flex-wrap">
-          <h2 className="p-1 px-3 rounded-full bg-gray-400">
+          <h2 className="p-1 bg-gray-500 text-white px-3 rounded-full">
             No. of Days: {userSelection?.trip_details?.duration}
           </h2>
-          <h2 className="p-1 px-3 rounded-full bg-gray-400">
+          <h2 className="p-1 px-3 rounded-full bg-gray-500 text-white ">
             {userSelection?.trip_details?.budget}
           </h2>
-          <h2 className="p-1 px-3 rounded-full bg-gray-400">
+          <h2 className="p-1 px-3 rounded-full bg-gray-500 text-white ">
             Travelers: {userSelection?.trip_details?.travelers}
           </h2>
         </div>

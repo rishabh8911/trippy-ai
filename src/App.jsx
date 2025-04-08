@@ -5,8 +5,6 @@ import Header from './components/ui/custom/Header'
 
 
 function App() {
-
-
   return (
     <>
     <Hero/>

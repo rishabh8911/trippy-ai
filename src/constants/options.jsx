@@ -29,6 +29,13 @@ export const SelectTravelslist =[
     },
 ]
 
+export const StatDetails=[
+    { number: "1000+", label: "Trips Planned" },
+    { number: "50+", label: "Countries" },
+    { number: "4.9/5", label: "User Rating" },
+    { number: "24/7", label: "AI Support" },
+  ];
+
 export const SelectBudget=[
     {
         id:1,

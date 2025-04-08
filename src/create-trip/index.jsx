@@ -188,20 +188,18 @@ function CreateTrip() {
     }).catch((err)=>{
       console.error("error fetching user profile:",err);
       
-    })
-    
-    
+    })    
   }
 
   return (
     <div className="sm:px-10 md:px-32 lg:px-56 xl:px-10 px-5 mt-10 text-left">
-      <h2 className="font-bold text-3xl">Tell us your travel preference</h2>
-      <p className="mt-3 text-xl font-light text-[20px]">
+      <h2 className="font-bold text-white text-3xl">Tell us your travel preference</h2>
+      <p className="mt-3 text-xl text-white font-light text-[20px]">
         Just provide some basic information, and our trip planner will generate
         a customized itinerary based on your preferences.
       </p>
       <div>
-        <h2 className="text-xl my-5 font-medium">
+        <h2 className="text-xl text-white my-5 font-medium">
           What's your destination choice?
         </h2>
         <input
@@ -209,9 +207,9 @@ function CreateTrip() {
           value={query}
           onChange={handleChange}
           placeholder="Search for a destination..."
-          className="border p-2 w-full"
+          className="border bg-black text-white rounded p-2 w-full"
         />
-        <ul className="bg-white border mt-2 max-h-48 overflow-auto">
+        <ul className="bg-black text-white rounded border mt-2 max-h-48 overflow-auto">
           {suggestions.map((suggestion) => (
             <li
               key={suggestion.properties.place_id}
@@ -224,38 +222,39 @@ function CreateTrip() {
         </ul>
       </div>
       <div>
-        <h2 className="text-xl font-semibold mt-9 mb-3">
+        <h2 className="text-xl text-white font-semibold mt-9 mb-3">
           How many days are you planning the trip?
         </h2>
         <Input
           placeholder="ex.3"
           type="number"
           name="days"
+          className="text-white "
           value={tripData.days}
           onChange={handleInputChange}
         />
       </div>
       <div>
-        <h2 className="text-xl my-3 font-medium">What is your Budget?</h2>
+        <h2 className="text-xl text-white my-3 font-medium">What is your Budget?</h2>
       </div>
-      <div className="grid grid-cols-3 cursor-pointer gap-5 mt-5">
+      <div className="grid grid-cols-3 b cursor-pointer gap-5 mt-5">
         {SelectBudget.map((item, index) => (
           <div
           
             key={index}
             // for dynamic styling we use {`styling`}
             className={`p-4 border rounded-lg hover:shadow ${
-              tripData.budget === item.type ? "bg-gray-200" : ""
+              tripData.budget === item.type ? "bg-slate-950" : ""
             }`}
             onClick={() => handleBudgetSelect(item.type)}
           >
-            <h2 className="text-lg font-bold">{item.type}</h2>
+            <h2 className="text-lg text-white font-bold">{item.type}</h2>
             <h2 className="text-sm text-gray-600">{item.desc}</h2>
           </div>
         ))}
       </div>
       <div>
-        <h2 className="text-xl my-3 font-medium">
+        <h2 className="text-xl text-white my-3 font-medium">
           Who do you plan on traveling with on your next adventure?
         </h2>
       </div>
@@ -264,11 +263,11 @@ function CreateTrip() {
           <div
             key={index}
             className={`p-4 border rounded-lg hover:shadow ${
-              tripData.travelCompanions === item.title ? "bg-gray-200" : ""
+              tripData.travelCompanions === item.title ? "bg-slate-950" : ""
             }`}
             onClick={() => handleCompanionSelect(item.title)}
           >
-            <h2 className="text-lg font-bold">{item.title}</h2>
+            <h2 className="text-lg text-white font-bold">{item.title}</h2>
             <h2 className="text-sm text-gray-600">{item.desc}</h2>
           </div>
         ))}
@@ -280,7 +279,7 @@ function CreateTrip() {
 
          onClick={handleGenerateTrip}>
           { loading?
-            <AiOutlineLoading3Quarters className='h-7 w-7 animate-spin'/>:'Generate Trip'
+            <AiOutlineLoading3Quarters className='h-7 w-7 animate-spin'/>:'Generate Trip✨'
 
           }
                </Button>
