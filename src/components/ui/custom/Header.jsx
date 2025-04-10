@@ -4,6 +4,7 @@ import { useNavigate } from "react-router";
 import { useGoogleLogin } from "@react-oauth/google";
 import { Button } from "../Button";
 import { FcGoogle } from "react-icons/fc";
+import { HiHome } from "react-icons/hi2";
 
 import {
   Dialog,
@@ -53,23 +54,24 @@ const login = useGoogleLogin({
         window.location.reload()
         
       }).catch((err)=>{
-        console.error("error fetching user profile:",err);
-        
+        console.error("error fetching user profile:",err);   
       })
-      
-      
     }
-
   const navigate= useNavigate();
   function goToHomePage(){
     navigate('/')
   }
 
-
   return (
-    <div className="p-1 border-rounded flex h-16  w-full justify-between items center ">
+    <div className="p-1 border-rounded flex h-16  w-full justify-between ">
       <img src="image.png" alt="travel logo"/>
-      <div>
+
+      
+      <div className="flex items-center gap-6">
+      <button className="text-white font-semibold" onClick={()=>{
+        goToHomePage();
+      }} >< HiHome className="size-6 "/> </button>
+
         {user? (
             <button onClick={()=>{
                 googleLogout(); 
@@ -80,7 +82,6 @@ const login = useGoogleLogin({
             }} className="bg-black text-white font-semibold p-2 rounded h-10">Log Out</button>
         ):(
             <button onClick={()=> setOpenDailog(true)} className="bg-black text-white font-semibold p-2 rounded h-10">Sign in </button>
-
         )}
       </div>
       <Dialog open={openDailog}>
@@ -92,6 +93,7 @@ const login = useGoogleLogin({
                   <DialogDescription>
                     <h2 className="font-bold text-lg mt-1">Sign with Google</h2>
                     <p>Sign in with Google Authentication securely</p>
+
                     <Button 
                     
                     onClick={login}

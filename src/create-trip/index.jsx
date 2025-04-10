@@ -92,23 +92,6 @@ function CreateTrip() {
     }));
   };
 
-  // const handleGenerateTrip = () => {
-  //   if(tripData?.noOfDays>5&&!tripData?.destination||!tripData?.budget)
-  //   {
-  //     toast("please fill all detail")
-  //   }
-  //   console.log("Generated Trip Data:", tripData);
-
-  //   const FINAL_PROMPT = Ai_Prompt
-  //   .replace('{destination}',tripData?.destination)
-  //   .replace('{totalDays}',tripData?.days)
-  //   .replace('{traveler}',tripData?.travelCompanions)
-  //   .replace('{budget}',tripData?.budget)
-
-  //   console.log("FINAL", FINAL_PROMPT)
-
-  // };
-
   const login = useGoogleLogin({
     onSuccess:(codeResp)=>{
       console.log("coderesponse",codeResp);
