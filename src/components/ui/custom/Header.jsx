@@ -2,7 +2,8 @@ import React, { useEffect ,useState} from "react";
 import { googleLogout } from "@react-oauth/google";
 import { useNavigate } from "react-router";
 import { useGoogleLogin } from "@react-oauth/google";
-import { Button } from "../Button";
+import { Button } from "@/components/ui/Button";
+
 import { FcGoogle } from "react-icons/fc";
 import { HiHome } from "react-icons/hi2";
 
