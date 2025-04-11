@@ -1,6 +1,6 @@
 import { StrictMode } from 'react';
 import { createRoot } from 'react-dom/client';
-import ShowTrip from './pages/Showtrip.jsx';
+import ShowTrip from './pages/ShowTrip.jsx';
 import { createBrowserRouter, RouterProvider } from 'react-router-dom';
 import CreateTrip from './create-trip';
 import Header from './components/ui/custom/Header';
