@@ -12,7 +12,8 @@ function ShowTrip() {
 
   const { tripId } = useParams(); 
    
-  const [trip, setTrip] = useState([]);
+  // const [trip, setTrip] = useState([]);
+  const [trip, setTrip] = useState(null);
 
   useEffect(() => {
     tripId && getTripData();
