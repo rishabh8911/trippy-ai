@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { useParams } from "react-router";
+import { useParams } from "react-router-dom";
 import { db } from "@/service/firebaseConfig";
 import { doc, getDoc } from "firebase/firestore";
 import { toast } from "sonner";
@@ -7,6 +7,8 @@ import Info from "../showTrip/components/Info";
 import Hotels from "../showTrip/components/Hotels";
 import Visit from "../showTrip/components/Visit";
 import Footer from "../showTrip/components/Footer";
+
+
 function ShowTrip() {
   //fetch document from firebase db
 
