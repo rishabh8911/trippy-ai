@@ -7,10 +7,10 @@ import { toast } from "sonner";
 // import Hotels from "../showTrip/components/Hotels";
 // import Visit from "../showTrip/components/Visit";
 // import Footer from "../showTrip/components/Footer";
-import Info from "@/showTrip/components/Info";
-import Hotels from "@/showTrip/components/Hotels";
-import Visit from "@/showTrip/components/Visit";
-import Footer from "@/showTrip/components/Footer";
+import Info from "@/ViewTrip/components/Info";
+import Hotels from "@/ViewTrip/components/Hotels";
+import Visit from "@/ViewTrip/components/Visit";
+import Footer from "@/ViewTrip/components/Footer";
 
 
 function ShowTrip() {
