@@ -5,7 +5,8 @@ import { FcGoogle } from "react-icons/fc";
 import { AiOutlineLoading3Quarters } from "react-icons/ai";
 import { Ai_Prompt, SelectBudget } from "@/constants/options";
 import { SelectTravelslist } from "@/constants/options";
-import { Button } from "@/components/ui/Button";
+import { Button } from "../components/ui/Button";
+
 import { toast } from "sonner";
 import { chatSession } from "@/service/AImodel";
 import {getFirestore} from "firebase/firestore";
