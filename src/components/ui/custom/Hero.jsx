@@ -1,6 +1,6 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import { Button } from "../Button";
+import { Button } from "../button";
 import Stats from "@/components/Stats";
 import MarqueeDemo from "@/components/magicui/MarqueeDemo";
 
