@@ -5,6 +5,8 @@ import { useGoogleLogin } from "@react-oauth/google";
 import { Button } from "@/components/ui/button";
 import { FcGoogle } from "react-icons/fc";
 import { HiHome } from "react-icons/hi2";
+import { useUser } from "@/context/UserContext";
+import axios from "axios";
 
 import {
   Dialog,
@@ -15,16 +17,21 @@ import {
 } from "@/components/ui/dialog";
 
 function Header() {
-  const [user, setUser] = useState(null);
+  const [showWelcomeText, setShowWelcomeMessage]= useState(false);
+  const {user, setUser}= useUser();
   const [openDailog, setOpenDailog] = useState(false);
   //   const user = JSON.stringify(localStorage.getItem("user"));
 
-  useEffect(() => {
-    const storedUser = localStorage.getItem("user");
-    if (storedUser) {
-      setUser(JSON.parse(storedUser));
+  //auto hide text after 5 sec 
+
+  useEffect(()=>{
+    if (showWelcomeText){
+      const timer= setTimeout(()=>setShowWelcomeMessage(false),4000);
+      return ()=>clearTimeout(timer)
     }
-  }, []);
+  }, [showWelcomeText])
+
+  
 
   const login = useGoogleLogin({
     onSuccess: (codeResp) => {
@@ -48,10 +55,11 @@ function Header() {
         }
       )
       .then((res) => {
-        console.log("response=", res);
+        
         localStorage.setItem("user", JSON.stringify(res.data));
-        setOpenDailog(false);
-        window.location.reload();
+        setUser(res.data); //state update
+        setOpenDailog(false); 
+        // window.location.reload();
       })
       .catch((err) => {
         console.error("error fetching user profile:", err);
@@ -97,7 +105,7 @@ function Header() {
           </button>
         )}
       </div>
-      <Dialog open={openDailog}>
+      <Dialog open={openDailog} onOpenChange={setOpenDailog}>
         <DialogContent>
           <DialogHeader>
             <DialogTitle>welcome</DialogTitle>
@@ -114,6 +122,14 @@ function Header() {
           </DialogHeader>
         </DialogContent>
       </Dialog>
+
+      {showWelcomeText&& (
+        <div className="fixed top-16 right-4 bg-green-500 text-white px-4 py-3 rounded shadow-lg z-50">
+          <p>🎉 Welcome! Click on "Get Started" to plan your first AI-personalized trip.</p>
+          </div>
+          
+
+      )}
     </div>
   );
 }
