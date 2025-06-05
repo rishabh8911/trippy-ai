@@ -123,13 +123,15 @@ function CreateTrip() {
   }
 
   const handleGenerateTrip = async () => {
-    console.log("generating trip...");
+    setLoading(true);
+    // console.log("generating trip...");
     
     const user = localStorage.getItem("user");
 
     if (!user) {
       console.log("user not authenticated");
       setOpenDailog(true);
+      setLoading(false);
       return;
     }
 
@@ -137,6 +139,7 @@ function CreateTrip() {
     // "||" used to combine multiple conditions where anyone is true triggers he code the block
     if (!destination || !days || !budget || !travelCompanions) {
       toast("Please fill in all details");
+      setLoading(false);
       return;
     }
     // .replace method is called on a string
@@ -145,13 +148,20 @@ function CreateTrip() {
       .replace("{traveler}", travelCompanions)
       .replace("{budget}", budget);
 
-    console.log("Generated Trip Data:", tripData);
-    console.log("FINAL PROMPT:", FINAL_PROMPT);
+    // console.log("Generated Trip Data:", tripData);
+    // console.log("FINAL PROMPT:", FINAL_PROMPT);
 
+    //adding try catch around async code provides code safety
+
+   try {
     const result = await chatSession.sendMessage(FINAL_PROMPT);
     console.log(result?.response?.text());
-    setLoading(false)
-    SaveAiTrip(result?.response?.text())
+    await SaveAiTrip(result?.response?.text());
+   
+  } catch (error) {
+    console.error("Error generating trip:", error);
+    setLoading(false);
+  }
   };
 
   const GetUserProfile=(tokenInfo)=>{
