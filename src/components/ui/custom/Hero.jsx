@@ -7,7 +7,7 @@ import MarqueeDemo from "@/components/magicui/MarqueeDemo";
 function Hero() {
   return (
     <div className="py-2  bg-black flex flex-col items-center">
-      <h1 className="text-4xl md:text-5xl p-6 font-extrabold leading-tight tracking-tight">
+      <h1 className="text-4xl max sm:text-2xl md:text-5xl p-6 font-extrabold leading-tight tracking-tight">
         <span className="bg-clip-text text-transparent bg-gradient-to-r from-[#5175f5] to-orange-500">
           Trippy Your AI Travel
         </span>
@@ -27,7 +27,7 @@ function Hero() {
 
       <div className="">
       <Link to="/create-trip">
-        <Button className="m-9">Get Started, It's Free</Button>
+        <Button className="m-3 mt-9">Get Started, It's Free</Button>
         <Button>View sample Trips </Button>
       </Link>
 
@@ -41,5 +41,4 @@ function Hero() {
 
 export default Hero;
 
-// Trippy Your AI Travel Companion
-// Let's Plan, Explore, and Wander, Personalized Just for You!"
+

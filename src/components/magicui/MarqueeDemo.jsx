@@ -39,14 +39,14 @@ const firstRow = reviews.slice(0, reviews.length / 2);
 const secondRow = reviews.slice(reviews.length / 2);
 const fallbackImg = "https://via.placeholder.com/300x200?text=Travel+Image";
 
-// ✨ Updated: Only show image inside a card
+
 
   const ReviewCard = ({ img }) => {
     const handleImageError = (e) => {
       e.target.src = fallbackImg;
     };
   return (
-    <div className="relative h-40 w-64 overflow-hidden rounded-xl border border-gray-300 bg-white/10 shadow-md">
+    <div className="relative h-40 w-64 max-sm w-overflow-hidden rounded-xl border border-gray-300 bg-white/10 shadow-md">
       <img
         src={img}
         alt="Travel"
@@ -61,7 +61,7 @@ const MarqueeDemo = () => {
   return (
     <div className="relative w-full overflow-hidden bg-black py-10">
 
-      {/* ⬇️ PLACE THIS HERE — first row of sliding images */}
+      {/* PLACE THIS HERE — first row of sliding images */}
       <Marquee pauseOnHover direction="left" className="gap-4 [--duration:20s]">
         {firstRow.map((review, index) => (
           <ReviewCard key={index} img={review.img} />
