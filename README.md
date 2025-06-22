@@ -1,8 +1,20 @@
-# React + Vite
+📝 About
+Trippy AI is an AI-powered travel planner that helps users plan trips with a single click. Users can input their preferences, and the app generates an itinerary, recommends hotels, places to visit, and dining spots—all within a user-defined budget.
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+✨ Features:
+✅ One-click travel planning
+🧠 AI-generated itineraries (via Gemini API)
+🏨 Hotel recommendations
+📍 Place & activity suggestions
+📅 Flexible itineraries
+🔥 Modern UI using Tailwind CSS
+🔐 Firebase Authentication
 
-Currently, two official plugins are available:
+🧰 Tech Stack:
+Frontend: React, Tailwind CSS
+Backend: Firebase (Auth, Firestore)
+AI Integration: Google Gemini API
+Deployment: Vercel
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+📺 Demo
+🌐[ https://trippy-ai-mire.vercel.app/](https://trippy-ai-mire.vercel.app/)
